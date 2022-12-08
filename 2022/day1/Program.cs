@@ -2,19 +2,19 @@
 using System.IO;
 using System.Linq;
 
-string[] text = File.ReadAllLines(@".\input.txt");
+string[] input = File.ReadAllLines(@".\input.txt");
 
 // Part 1: Get the elf with the most calories
 int currentTotal = 0;
 List<int> totals = new();
 
-for (int i = 0; i < text.Count(); i++)
+for (int i = 0; i < input.Count(); i++)
 {
-    if (text[i] != "")
+    if (input[i] != "")
     {
-        currentTotal += Convert.ToInt32(text[i]);
+        currentTotal += Convert.ToInt32(input[i]);
     }
-    else if (text[i] == "" || i == text.Count() -1)
+    else if (input[i] == "" || i == input.Count() -1)
     {
         totals.Add(currentTotal);
         currentTotal = 0;
