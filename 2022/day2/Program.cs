@@ -3,8 +3,8 @@ using System.IO;
 
 class Program
 {
-    static void Main() {
-
+    static void Main()
+    {
         string[] input = File.ReadAllLines(@".\input.txt");
 
         int partOneScore = 0;
