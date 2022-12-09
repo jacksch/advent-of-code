@@ -22,8 +22,9 @@ class Program
             if (ContainsTheOther(elf1arr, elf2arr)) partOneCount++;
             if (Overlaps(elf1arr,elf2arr)) partTwoCount++;
         }
-        Console.WriteLine(partOneCount.ToString());
-        Console.WriteLine(partTwoCount.ToString());
+        
+        Console.WriteLine("Part One Solution: {0}", partOneCount.ToString());
+        Console.WriteLine("Part Two Solution: {0}", partTwoCount.ToString());
     }
 
     static int[] GetArray(string startStr, string endStr)

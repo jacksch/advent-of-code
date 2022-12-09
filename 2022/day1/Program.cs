@@ -33,5 +33,5 @@ foreach (var x in topThree)
     topThreeTotal += x;
 }
 
-Console.WriteLine("The elf with the most calories of food has: {0}",totals.Max());
-Console.WriteLine("The top three elves has a total calories of: {0}",topThreeTotal);
+Console.WriteLine("Part One Solution: {0}", totals.Max());
+Console.WriteLine("Part Two Solution: {0}", topThreeTotal);

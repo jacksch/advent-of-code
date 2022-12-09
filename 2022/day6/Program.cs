@@ -9,8 +9,8 @@ class Program
         string[] input = File.ReadAllLines(@".\input.txt");
         string message = input[0];
 
-        Console.WriteLine(GetResult(message, 4));
-        Console.WriteLine(GetResult(message, 14));
+        Console.WriteLine("Part One Solution: {0}", GetResult(message, 4));
+        Console.WriteLine("Part Two Solution: {0}", GetResult(message, 14));
     }
     static string GetResult(string message, int num)
     {

@@ -17,8 +17,8 @@ class Program
             partTwoScore += SpecifyResult(hands[0],hands[1]);
         }
 
-        Console.WriteLine(partOneScore);
-        Console.WriteLine(partTwoScore);
+        Console.WriteLine("Part One Solution: {0}", partOneScore);
+        Console.WriteLine("Part Two Solution: {0}", partTwoScore);
     }
 
     static int GameScoreResult(string p1Hand, string p2Hand)

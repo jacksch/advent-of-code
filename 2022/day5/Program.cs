@@ -11,11 +11,8 @@ class Program
         List<string> stacks = ParseStacks(input);
         List<int[]> instructions = ParseInstructions(input);
 
-        string topCratesP1 = TopCratesPartOne(stacks, instructions);
-        string topCratesP2 = TopCratesPartTwo(stacks, instructions);
-
-        Console.WriteLine(topCratesP1);
-        Console.WriteLine(topCratesP2);
+        Console.WriteLine("Part One Solution: {0}", TopCratesPartOne(stacks, instructions));
+        Console.WriteLine("Part Two Solution: {0}", TopCratesPartTwo(stacks, instructions));
     }
     static List<string> ParseStacks(string[] input)
     {

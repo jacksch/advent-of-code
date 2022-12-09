@@ -32,9 +32,9 @@ class Program
                 badgePrioritySum += SortPriority(badgeLetter);
             }   
         }
-        Console.WriteLine(prioritySum.ToString());
-        Console.WriteLine(badgePrioritySum.ToString());
 
+        Console.WriteLine("Part One Solution: {0}", prioritySum.ToString());
+        Console.WriteLine("Part Two Solution: {0}", badgePrioritySum.ToString());
     }
     static int SortPriority(string letter)
     {
