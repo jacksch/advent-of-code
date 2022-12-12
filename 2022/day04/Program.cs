@@ -5,7 +5,7 @@ class Program
 {
     static void Main()
     {
-        string[] input = File.ReadAllLines(@".\input.txt");
+        string[] input = File.ReadAllLines(@"./input.txt");
 
         int partOneCount = 0;
         int partTwoCount = 0;

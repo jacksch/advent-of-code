@@ -5,7 +5,7 @@ class Program
 {
     static void Main()
     {
-        string[] input = File.ReadAllLines(@".\input.txt");
+        string[] input = File.ReadAllLines(@"./input.txt");
 
         int partOneScore = 0;
         int partTwoScore = 0;

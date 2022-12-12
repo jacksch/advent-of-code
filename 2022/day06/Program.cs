@@ -6,7 +6,7 @@ class Program
 {
     static void Main()
     {
-        string[] input = File.ReadAllLines(@".\input.txt");
+        string[] input = File.ReadAllLines(@"./input.txt");
         string message = input[0];
 
         Console.WriteLine("Part One Solution: {0}", GetResult(message, 4));

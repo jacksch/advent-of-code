@@ -6,7 +6,7 @@ class Program
 {
     static void Main()
     {
-        string[] input = File.ReadAllLines(@".\input.txt");
+        string[] input = File.ReadAllLines(@"./input.txt");
 
         List<string> stacks = ParseStacks(input);
         List<int[]> instructions = ParseInstructions(input);

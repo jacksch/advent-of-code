@@ -5,12 +5,12 @@ using System.Linq;
 
 class Program
 {
-
     public static int x = 1;
     public static int n = 0;
     public static int xPixel = 0;
     public static int[] checks = { 20, 60, 100, 140, 180, 220 };
     public static int cycleProductSum = 0;
+    
     static void Main()
     {
         string[] input = File.ReadAllLines(@"./input.txt");

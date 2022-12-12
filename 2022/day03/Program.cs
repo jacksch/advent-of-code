@@ -6,13 +6,12 @@ class Program
 {
     static void Main()
     {
-        string[] input = File.ReadAllLines(@".\input.txt");
+        string[] input = File.ReadAllLines(@"./input.txt");
 
         int prioritySum = 0;
         int badgePrioritySum = 0;
         for (int i = 0; i < input.Count(); i++)
         {
-            // Part One
             string firstHalf = input[i].Substring(0, input[i].Length / 2);
             string secondHalf = input[i].Substring(input[i].Length / 2);
 
@@ -22,7 +21,6 @@ class Program
 
             prioritySum += SortPriority(duplicateItem);
 
-            // Part Two
             if ((i + 1) % 3 == 0)
             {
                 var badgeLetter = String.Concat((from y in input[i]
