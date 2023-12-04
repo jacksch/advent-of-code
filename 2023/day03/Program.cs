@@ -6,14 +6,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        // string[] input = File.ReadAllLines(@"./sampleinput.txt");
         string[] input = File.ReadAllLines(@"./input.txt");
 
-        // int partOneResult = PartOne(input);
+        int partOneResult = PartOne(input);
         int partTwoResult = PartTwo(input);
 
-        // Console.WriteLine("Part One Solution: {0}", partOneResult);
-        Console.WriteLine("Part Two Solution: {0}", partTwoResult); // 69527306 
+        Console.WriteLine("Part One Solution: {0}", partOneResult);
+        Console.WriteLine("Part Two Solution: {0}", partTwoResult);
     }
 
     static int PartOne(string[] input)
@@ -29,13 +28,7 @@ class Program
                 if (char.IsDigit(line[c]))
                 {
                     sb.Append(line[c]);
-                    if (c + 1 == line.Length)
-                    {
-                        string numString = sb.ToString();
-                        if (IsPartNumber(input, numString.Length, i, c - numString.Length + 1))
-                            result += int.Parse(sb.ToString());
-                    }
-                    else if (!char.IsDigit(line[c + 1])) // Separate this condition to prevent out-of-bounds issues
+                    if (c + 1 == line.Length || !char.IsDigit(line[c + 1]))
                     {
                         string numString = sb.ToString();
                         if (IsPartNumber(input, numString.Length, i, c - numString.Length + 1))
@@ -63,17 +56,8 @@ class Program
 
             for (int c = 0; c < line.Length - 1; c++)
             {
-                if (line[c].Equals('*'))
-                {
-                    // Console.WriteLine("LineIdx: {0}, CharIdx: {1}", i, c);
-                    if (IsGear(input, i, c))
-                    {
-                        // Console.WriteLine("{0},{1} is a gear!", i, c);
-                        int ratio = GetGearRatio(input, i, c);
-                        // Console.WriteLine("Ratio: {0}\r\n", ratio);
-                        result += ratio;
-                    }
-                }
+                if (line[c].Equals('*') && IsGear(input, i, c))
+                    result += GetGearRatio(input, i, c);
             }
         }
 
@@ -103,9 +87,7 @@ class Program
                 }
             }
             if (isNumber)
-            {
                 count++;
-            }
         }
         if (count == 2)
             return true;
@@ -126,25 +108,13 @@ class Program
             StringBuilder sb = new();
             for (int j = -1; j <= 1; j++)
             {
-                char currentChar = input[li + i][ci + j];
-                if (char.IsDigit(currentChar) && !buildingNumber)
-                {
+                if (char.IsDigit(input[li + i][ci + j]) && !buildingNumber)
                     numberFound = true;
-                }
 
                 while (numberFound)
                 {
-                    if (ci + j == 0)
+                    if (ci + j == 0 || !char.IsDigit(input[li + i][ci + j - 1]))
                     {
-                        // Console.WriteLine("0: {0}", input[li + i][ci + j]);
-                        numberFound = false;
-                        buildingNumber = true;
-
-                        break;
-                    }
-                    else if (!char.IsDigit(input[li + i][ci + j - 1]))
-                    {
-                        // Console.WriteLine("1: {0}", input[li + i][ci + j]);
                         numberFound = false;
                         buildingNumber = true;
 
@@ -153,54 +123,19 @@ class Program
                     j--;
                 }
 
-                // Console.WriteLine("Index: {0}, Char: {1}", ci + j, input[li + i][ci + j]);
                 while (buildingNumber)
                 {
                     sb.Append(input[li + i][ci + j]);
                     if (ci + j == input[li].Length - 1 || !char.IsDigit(input[li + i][ci + j + 1]))
                     {
                         buildingNumber = false;
-                        if (sb.ToString().Length > 0)
-                        {
-                            // Console.WriteLine(sb.ToString());
-                            result *= int.Parse(sb.ToString());
-                            sb = new();
-                        }
+                        result *= int.Parse(sb.ToString());
+                        sb = new();
                         break;
                     }
                     j++;
                 }
-
-                // while (buildingNumber)
-                // {
-                //     sb.Append(input[li + i][ci + j]);
-                //     if (ci + j == input[li].Length - 1)
-                //     {
-                //         buildingNumber = false;
-                //         if (sb.ToString().Length > 0)
-                //         {
-                //             // Console.WriteLine(sb.ToString());
-                //             result *= int.Parse(sb.ToString());
-                //             sb = new();
-                //         }
-                //         break;
-                //     }
-                //     else if (!char.IsDigit(input[li + i][ci + j + 1]))
-                //     {
-                //         if (sb.ToString().Length > 0)
-                //         {
-                //             // Console.WriteLine(sb.ToString());
-                //             result *= int.Parse(sb.ToString());
-                //             sb = new();
-                //         }
-                //         buildingNumber = false;
-                //         break;
-                //     }
-                //     j++;
-                // }
             }
-            // Console.WriteLine();
-            
         }
 
         return result;
