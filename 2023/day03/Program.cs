@@ -35,11 +35,8 @@ class Program
                             result += int.Parse(sb.ToString());
                     }
                 }
-                else if (c > 0)
-                {
-                    if (char.IsDigit(line[c - 1]))
-                        sb = new StringBuilder();
-                }
+                else if (c > 0 && char.IsDigit(line[c - 1]))
+                    sb = new StringBuilder();
 
             }
         }
@@ -53,12 +50,9 @@ class Program
         for (int i = 0; i < input.Length - 1; i++)
         {
             string line = input[i];
-
             for (int c = 0; c < line.Length - 1; c++)
-            {
                 if (line[c].Equals('*') && IsGear(input, i, c))
                     result += GetGearRatio(input, i, c);
-            }
         }
 
         return result;
@@ -77,9 +71,8 @@ class Program
                 char currentChar = input[li + i][ci + j];
 
                 if (char.IsDigit(currentChar))
-                {
                     isNumber = true;
-                }
+
                 if (!char.IsDigit(currentChar) && isNumber)
                 {
                     isNumber = false;
@@ -117,7 +110,6 @@ class Program
                     {
                         numberFound = false;
                         buildingNumber = true;
-
                         break;
                     }
                     j--;
@@ -155,26 +147,20 @@ class Program
 
         if (e < ll && symbols.Contains(input[i][e + 1])) // Check right
             return true;
+        
+        for (int k = -1; k <= numLength; k++) // Check above
+            if (j + k > 0 &&
+                e + k < ll &&
+                i > 0 &&
+                symbols.Contains(input[i - 1][j + k]))
+                    return true;
 
-        for (int k = 0; k <= numLength - 1; k++) // Check above
-            if (i > 0 && symbols.Contains(input[i - 1][j + k]))
-                return true;
-
-        for (int k = 0; k <= numLength - 1; k++) // Check underneath
-            if (i < input.Length - 1 && symbols.Contains(input[i + 1][j + k]))
-                return true;
-
-        if (j > 0 && i > 0 && symbols.Contains(input[i - 1][j - 1])) // Check top-left
-            return true;
-
-        if (e < ll && i > 0 && symbols.Contains(input[i - 1][e + 1])) // Check top-right
-            return true;
-
-        if (j > 0 && i < input.Length - 1 && symbols.Contains(input[i + 1][j - 1])) // Check bottom-left
-            return true;
-
-        if (e < ll && i < input.Length - 1 && symbols.Contains(input[i + 1][e + 1])) // Check bottom-right
-            return true;
+        for (int k = -1; k <= numLength; k++) // Check underneath
+            if (j + k > 0 &&
+                e + k < ll &&
+                i < input.Length - 1 &&
+                symbols.Contains(input[i + 1][j + k]))
+                    return true;
 
         return false;
     }
