@@ -4,10 +4,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        string[] input = File.ReadAllLines(@"./sampleinput.txt"); long maxSize = 100;
-        // string[] input = File.ReadAllLines(@"./input.txt"); long maxSize = 10_000_000_000;
+        string[] input = File.ReadAllLines(@"./sampleinput.txt");
+        // string[] input = File.ReadAllLines(@"./input.txt");
 
-        Solution solution = new(input, maxSize);
+        Solution solution = new(input);
 
         int partOneResult = solution.PartOne();
         int partTwoResult = solution.PartTwo();
@@ -20,41 +20,63 @@ class Program
 public class Solution
 {
     private readonly string[] _input;
-    private readonly long _maxSize;
-    private readonly long[] _seeds;
-    private long[] _seedsMap;
-    public Solution(string[] input, long maxSize)
+    private readonly uint[] _seeds;
+    public Solution(string[] input)
     {
         _input = input;
-        _maxSize = maxSize;
         _seeds = ParseSeeds();
-        _seedsMap = new long[maxSize];
     }
 
     public int PartOne()
     {
-
-        for (int i = 2; i < _input.Length; i++)
+        foreach (uint seed in _seeds)
         {
-            
+            for (int i = 2; i < _input.Length; i++)
+            {
+                if (seed != 79) continue; // Testing
+                int m = 0;
+                string[] line = _input[i].Split(" ");
+                if (String.IsNullOrWhiteSpace(_input[i]) && m == 2)
+                {
+                    break; // Testing
+                    m++;
+                }
+                if (String.IsNullOrWhiteSpace(_input[i]))
+                {
+                    Console.WriteLine(_input[i + 1]);
+                    continue;
+                }
+                
+
+                if (line.Length == 2)
+                    continue;
+                
+                uint destIdx = uint.Parse(line[0]);
+                uint srcIdx = uint.Parse(line[1]);
+                uint range = uint.Parse(line[2]);
+
+                Console.WriteLine("Seed: {0}, Dest: {1}, Src: {2}, Range {3}", seed, destIdx, srcIdx, range);
+
+                // if src - range - 1 == seed, etc
+                if (srcIdx < seed && srcIdx + range - 1 > seed)
+                {
+                    // Console.WriteLine("We have something?");
+                    long offset = (long)destIdx - (long)srcIdx;
+                    long newSeed = seed + offset;
+                    Console.WriteLine(newSeed);
+                }
+                else
+                {
+                    // Should stay the same?
+                }
+
+            }
         }
-
-        // long[] seedToSoil = TestParseMap();
-
-        
-
         return 0;
     }
 
-    public long[] TestParseMap()
-    {
-
-
-        return [];
-    }
-
-    public long[] ParseSeeds() =>
-        _input[0].Split(": ")[1].Split(" ").Select(long.Parse).ToArray();
+    public uint[] ParseSeeds() =>
+        _input[0].Split(": ")[1].Split(" ").Select(uint.Parse).ToArray();
 
     public int PartTwo() =>
         0;
