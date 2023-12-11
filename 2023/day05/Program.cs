@@ -36,7 +36,7 @@ public class Solution
 
     public uint PartOne()
     {
-        List<uint> locations = [];
+        uint lowestLocation = uint.MaxValue;
         foreach (uint currentSeed in _seeds)
         {
             uint seed = currentSeed;
@@ -68,10 +68,11 @@ public class Solution
                     breakLine = true;
                 }
             }
-            locations.Add(seed);
+            if (seed < lowestLocation)
+                lowestLocation = seed;
         }
 
-        return locations.Min();
+        return lowestLocation;
     }
 
     // public uint PartTwo()
@@ -80,10 +81,6 @@ public class Solution
     //     {
     //         uint seedNumber = _seeds[i];
     //         uint seedRange = _seeds[i + 1];
-
-
-
-
     //     }
 
     //     return 0;
