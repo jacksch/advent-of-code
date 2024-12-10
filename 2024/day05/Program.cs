@@ -3,89 +3,69 @@ static class Program {
 
     static void Main() {
         var input = ReadInput();
+        var rules = ParseRules(input);
 
-        var partOne = PartOne(input);
-        var partTwo = PartTwo(input);
+        var partOne = PartOne(input, rules);
+        var partTwo = PartTwo(input, rules);
 
         Console.WriteLine($"Part One answer: {partOne}"); // 5964
-        Console.WriteLine($"Part Two answer: {partTwo}"); //
+        Console.WriteLine($"Part Two answer: {partTwo}"); // 4719
     }
 
-    static int PartOne(string[] input) {
-        var rules = ParseRules(input);
-        var updates = ParseUpdates(input);
+    static int PartOne(string[] input, List<(int, int)> rules) =>
+        ParseUpdateLists(input)
+            .Select( list =>
+                IsInOrder(list, rules)
+                    ? list[list.Count() / 2]
+                    : 0)
+            .Sum();
 
-        int total = 0;
-        foreach (var update in updates) {
-            bool correctOrder = true;
-            var updateArr = update.ToArray();
-            foreach (var pageUpdate in update) {
-                // var pageRules = rules.Where( x => x.Item1 == pageUpdate );
-                // foreach (var pageRule in pageRules) {
-                //     var lIndex = Array.IndexOf(updateArr, pageRule.Item1);
-                //     var rIndex = Array.IndexOf(updateArr, pageRule.Item2);
-                //
-                //     if (rIndex == -1) {
-                //         continue;
-                //     }
-                //
-                //     if (lIndex < rIndex) {
-                //         correctOrder = true;
-                //     }
-                //     else {
-                //         correctOrder = false;
-                //         break;
-                //     }
-                // }
-                // if (!correctOrder) {
-                //     break;
-                // }
-                var pageRules = rules.Where( x => x.Item1 == pageUpdate );
-                if (IsCompliant(updateArr, pageRules)) {
-                    correctOrder = true;
+    static int PartTwo(string[] input, List<(int, int)> rules) =>
+        ParseUpdateLists(input)
+            .Where(list => !IsInOrder(list, rules))
+            .Select(list => {
+                while (true) {
+                    var failingRule = FailingRule(list.ToArray(), rules);
+                    list.Move(failingRule.Item1, list.IndexOf(failingRule.Item2));
+
+                    if (IsInOrder(list, rules)) {
+                        return list[list.Count() / 2];
+                    }
                 }
-                else {
-                    correctOrder = false;
-                    break;
-                }
+            }).Sum();
+
+    static bool IsInOrder(List<int> pageUpdateList, List<(int, int)> rules) {
+        var pageUpdateArr = pageUpdateList.ToArray();
+        foreach (var pageUpdate in pageUpdateList) {
+            var pageRules = rules.Where( x => x.Item1 == pageUpdate );
+            if (!IsCompliant(pageUpdateArr, pageRules)) {
+                return false;
             }
-            if (correctOrder) {
-                total += update[update.Count() / 2];
+        }
+        return true;
+    }
+
+    static (int, int) FailingRule(int[] pageUpdateArr, IEnumerable<(int, int)> rules) {
+        foreach (var pageUpdate in pageUpdateArr) {
+            var pageRules = rules.Where( x => x.Item1 == pageUpdate );
+            foreach (var pageRule in pageRules) {
+                var lIndex = Array.IndexOf(pageUpdateArr, pageRule.Item1);
+                var rIndex = Array.IndexOf(pageUpdateArr, pageRule.Item2);
+
+                if (rIndex == -1) {
+                    continue;
+                }
+
+                if (lIndex >= rIndex) {
+                    return pageRule;
+                }
             }
         }
 
-
-        return total;
-    }
-
-    static int PartTwo(string[] input) {
-        var rules = ParseRules(input);
-        var updates = ParseUpdates(input);
-
-        int total = 0;
-        foreach (var update in updates) {
-            bool correctOrder = false;
-            var updateArr = update.ToArray();
-            foreach (var pageUpdate in update) {
-                var pageRules = rules.Where( x => x.Item1 == pageUpdate );
-                if (IsCompliant(updateArr, pageRules)) {
-                    correctOrder = true;
-                }
-                else {
-                    correctOrder = false;
-                    break;
-                }
-            }
-            if (correctOrder) {
-                total += update[update.Count() / 2];
-            }
-        }
-
-        return total;
+        return (0,0);
     }
 
     static bool IsCompliant(int[] update, IEnumerable<(int, int)> pageRules) {
-        // bool isCompliant = false;
         foreach (var pageRule in pageRules) {
             var lIndex = Array.IndexOf(update, pageRule.Item1);
             var rIndex = Array.IndexOf(update, pageRule.Item2);
@@ -94,16 +74,12 @@ static class Program {
                 continue;
             }
 
-            // Console.WriteLine("{0}, {1}, {2}", pageRule, lIndex, rIndex);
-
             if (lIndex >= rIndex) {
                 return false;
             }
         }
 
         return true;
-        // Console.WriteLine("Update: {0} is {1}", update, isCompliant);
-        // return isCompliant;
     }
 
     static List<(int, int)> ParseRules(string[] input) =>
@@ -112,7 +88,7 @@ static class Program {
             .Select(rules => (int.Parse(rules[0]), int.Parse(rules[1])))
             .ToList();
 
-    static List<List<int>> ParseUpdates(string[] input) {
+    static List<List<int>> ParseUpdateLists(string[] input) {
         List<List<int>> pages = new();
 
         foreach(var pageListStr in input) {
@@ -128,8 +104,25 @@ static class Program {
         return pages;
     }
 
+    static void Move<T>(this List<T> list, T item, int newIndex) {
+        if (item != null) {
+            var oldIndex = list.IndexOf(item);
+            if (oldIndex > -1) {
+                list.RemoveAt(oldIndex);
+                if (newIndex > oldIndex) {
+                    newIndex--;
+                }
+
+                list.Insert(newIndex, item);
+            }
+        }
+    }
+
+    static string ToString(this List<int> list) {
+        return string.Join(", ", list);
+    }
+
     static string[] ReadInput() =>
         File.ReadAllLines(@"./input.txt");
-        // File.ReadAllLines(@"./sampleinput.txt");
 }
 
